@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="registerForm" (ngSubmit)="registerUser(registerForm.value)">
+
+    
+    <ion-item>
+      <ion-input label="Nombre" labelPlacement="floating" placeholder="Juan" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-label color="danger" *ngIf="registerForm.get('name')?.hasError('required') && registerForm.get('name')?.dirty">
+      {{ formErrors.name[0].message }}
+    </ion-label>
+
+    
+    <ion-item>
+      <ion-input label="Apellido" labelPlacement="floating" placeholder="Pérez" formControlName="lastname"></ion-input>
+    </ion-item>
+    <ion-label color="danger" *ngIf="registerForm.get('lastname')?.hasError('required') && registerForm.get('lastname')?.dirty">
+      {{ formErrors.lastname[0].message }}
+    </ion-label>
+
+   
+    <ion-item>
+      <ion-input label="Usuario" labelPlacement="floating" placeholder="juan123" formControlName="username"></ion-input>
+    </ion-item>
+    <ion-label color="danger" *ngIf="registerForm.get('username')?.hasError('required') && registerForm.get('username')?.dirty">
+      {{ formErrors.username[0].message }}
+    </ion-label>
+
+    
+    <ion-item>
+      <ion-input label="Email" labelPlacement="floating" placeholder="example@email.com" formControlName="email"></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let error of formErrors.email">
+      <ion-label color="danger" *ngIf="registerForm.get('email')?.hasError(error.type) && registerForm.get('email')?.dirty">
+        {{ error.message }}
+      </ion-label>
+    </ng-container>
+
+    
+    <ion-item>
+      <ion-input label="Contraseña" labelPlacement="floating" type="password" placeholder="******" formControlName="password"></ion-input>
+    </ion-item>
+    <ng-container *ngFor="let error of formErrors.password">
+      <ion-label color="danger" *ngIf="registerForm.get('password')?.hasError(error.type) && registerForm.get('password')?.dirty">
+        {{ error.message }}
+      </ion-label>
+    </ng-container>
+
+    
+    <ion-item>
+      <ion-input label="Confirmar contraseña" labelPlacement="floating" type="password" placeholder="******" formControlName="passwordConfirmation"></ion-input>
+    </ion-item>
+    <ion-label color="danger" *ngIf="registerForm.hasError('match') && registerForm.get('passwordConfirmation')?.dirty">
+      {{ formErrors.passwordConfirmation[0].message }}
+    </ion-label>
+    <br>
+    
+    <ion-button type="submit" [disabled]="!registerForm.valid">Registro</ion-button>
+  </form>
+<br>
+  <ion-router-link routerLink="/login">volver al login</ion-router-link>
+  <br>
+  <ion-text *ngIf="errorMessage" color="danger">
+    <p class="error-message">{{ errorMessage }}</p>
+  </ion-text>
+
+
+
+</ion-content>
+

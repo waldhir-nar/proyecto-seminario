@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { IonicStorageModule } from '@ionic/storage-angular'; // IMPORTAMOS EL MÓDULO DE STORAGE
-
+import { provideHttpClient } from '@angular/common/http';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -17,7 +17,7 @@ import { IonicStorageModule } from '@ionic/storage-angular'; // IMPORTAMOS EL M�
     AppRoutingModule, 
     IonicStorageModule.forRoot() // AÑADIMOS EL MÓDULO DE STORAGE
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, provideHttpClient()],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -33,6 +33,10 @@
     </div>
     <ion-button type ="submit"[disabled]="!loginForm.valid">login</ion-button>
   </form>
-
-  <p>{{errorMessage}}</p>
+  <br>
+<ion-router-link routerLink="/register">Ir a register</ion-router-link>
+<br>
+  <ion-text *ngIf="errorMessage" color="danger">
+    <p class="error-message">{{ errorMessage }}</p>
+  </ion-text>
   </ion-content>
