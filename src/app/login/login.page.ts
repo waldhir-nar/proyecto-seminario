@@ -10,49 +10,49 @@ import { Storage } from '@ionic/storage-angular';
   standalone: false,
 })
 export class LoginPage implements OnInit {
-
   loginForm: FormGroup;
   errorMessage: any;
-  formErrors={
+  formErrors = {
     email: [
-      {type: 'required', message: ' el correo es obligatorio'},
-      {type: 'email', message: 'El coreo no es valido'}
+      { type: 'required', message: 'El correo es obligatorio' },
+      { type: 'email', message: 'El correo no es valido' }
     ],
     password: [
       { type: 'required', message: 'La contraseña es obligatoria' },
       { type: 'minlength', message: 'La contraseña debe tener al menos 6 caracteres' }
     ]
-  };
-
-  constructor( 
+  }
+  constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private navCtrl: NavController,
     private storage: Storage
   ) { 
-    this.loginForm= this.formBuilder.group({
+    this.loginForm = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
-       Validators.required,
-       Validators.email
+        Validators.required,
+        Validators.email
       ])),
       password: new FormControl('', Validators.compose([
-        Validators.minLength(6), 
-        Validators.required 
+        Validators.minLength(6),
+        Validators.required
       ]))
     })
   }
 
   ngOnInit() {
   }
-  loginUser(credentials:any){
-    this.authService.login(credentials).then(res =>{
-       console.log(res);
-       this.errorMessage = '';
-       this.storage.set('isUserLoggedIn', true);
-       this.navCtrl.navigateForward('/menu/home');
+
+  loginUser(credentials: any){
+    this.authService.login(credentials).then((res: any) => {
+      console.log(res);
+      this.errorMessage = '';
+      this.storage.set('user', res.user);
+      this.storage.set('isUserLoggedIn', true);
+      this.navCtrl.navigateForward('/menu/home');
     }).catch(err => {
       console.log(err);
-      this.errorMessage= err;
+      this.errorMessage = err;
     });
   }
 
