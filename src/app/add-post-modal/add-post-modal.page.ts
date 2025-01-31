@@ -4,7 +4,7 @@ import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostService } from '../services/post.service';
 import { Storage } from '@ionic/storage-angular';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 
 defineCustomElements(window);
@@ -17,13 +17,12 @@ defineCustomElements(window);
 export class AddPostModalPage implements OnInit {
   post_image: any;
   addPostForm: FormGroup;
-
   constructor(
     private formBuilder: FormBuilder,
     private postService: PostService,
     private storage: Storage,
-    private navCtrl: NavController,
-    private modalController: ModalController
+    private modalController: ModalController,
+    public alertController: AlertController
   ) { 
     this.addPostForm = this.formBuilder.group({
       description: new FormControl('', Validators.required),
@@ -34,13 +33,14 @@ export class AddPostModalPage implements OnInit {
   ngOnInit() {
   }
 
-  async uploadPhone(){
+  async uploadPhone(source: CameraSource){
     console.log('Upload Photo');
     const uploadPhoto = await Camera.getPhoto({
       resultType: CameraResultType.DataUrl,
-      source: CameraSource.Photos,
+      source: source,
       quality: 100
     });
+    console.log(uploadPhoto.dataUrl);
     this.post_image = uploadPhoto.dataUrl;
     this.addPostForm.patchValue({
       image: this.post_image
@@ -80,4 +80,33 @@ export class AddPostModalPage implements OnInit {
   closeAddPost(){
     this.modalController.dismiss();
   }
+  async presentPhotoOptions() {
+    const alert = await this.alertController.create({
+      header: "Seleccione una opción",
+      message: "¿De dónde desea obtener la imagen?",
+      buttons:[
+        {
+          text: "Cámara",
+          handler: () => {
+            this.uploadPhone(CameraSource.Camera);
+          }
+        },
+        {
+          text: "Galería",
+          handler: () => {
+            this.uploadPhone(CameraSource.Photos);
+          }
+        },
+        {
+          text: "Cancelar",
+          role: "cancel",
+          handler: () => {
+            console.log('Cancelado');
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+  
 }
