@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { PostService } from '../services/post.service';
 import { Storage } from '@ionic/storage-angular';
 import { ModalController, NavController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 
 defineCustomElements(window);
 @Component({
@@ -76,7 +77,7 @@ export class AddPostModalPage implements OnInit {
       }
     );
   }
-  goToHome() {
-    this.navCtrl.navigateRoot('/menu/home');
+  closeAddPost(){
+    this.modalController.dismiss();
   }
 }
