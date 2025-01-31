@@ -4,9 +4,9 @@ import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostService } from '../services/post.service';
 import { Storage } from '@ionic/storage-angular';
-import { ModalController } from '@ionic/angular';
-defineCustomElements(window);
+import { ModalController, NavController } from '@ionic/angular';
 
+defineCustomElements(window);
 @Component({
   selector: 'app-add-post-modal',
   templateUrl: './add-post-modal.page.html',
@@ -15,11 +15,13 @@ defineCustomElements(window);
 })
 export class AddPostModalPage implements OnInit {
   post_image: any;
-  addPostForm: FormGroup
+  addPostForm: FormGroup;
+
   constructor(
     private formBuilder: FormBuilder,
     private postService: PostService,
     private storage: Storage,
+    private navCtrl: NavController,
     private modalController: ModalController
   ) { 
     this.addPostForm = this.formBuilder.group({
@@ -30,6 +32,7 @@ export class AddPostModalPage implements OnInit {
 
   ngOnInit() {
   }
+
   async uploadPhone(){
     console.log('Upload Photo');
     const uploadPhoto = await Camera.getPhoto({
@@ -42,6 +45,7 @@ export class AddPostModalPage implements OnInit {
       image: this.post_image
     });
   }
+
   async addPost(post_data: any){
     console.log('Add Post');
     console.log(post_data);
@@ -57,11 +61,22 @@ export class AddPostModalPage implements OnInit {
     this.postService.createPost(post_param).then(
       (data: any) => {
         console.log(data, 'post creado');
+        data.user = {
+          id: user.id,
+          name: user.name,
+          image: user.image || 'assets/images/default-avatar.jpeg'
+        };
+        this.postService.postCreated.emit(data);
+        this.addPostForm.reset();
+        this.post_image = null;
         this.modalController.dismiss();
       },
       (error) => {
         console.log(error, 'error');
       }
     );
+  }
+  goToHome() {
+    this.navCtrl.navigateRoot('/menu/home');
   }
 }
