@@ -14,4 +14,19 @@
   <p>usuario: {{user_data.username}}</p>
   <p>Seguidores: {{user_data.followers.length}}</p>
   <p>Siguiendo: {{user_data.followees.length}}</p>
+
+  <ion-button  (click)="toggleEditForm()">
+    {{ isEditing ? 'Cancelar' : 'Editar Usuario' }}
+  </ion-button>
+
+  
+  <form *ngIf="isEditing" [formGroup]="editForm" (ngSubmit)="updateUsername(editForm.value)">
+    <ion-item>
+      <ion-input label="Usuario" labelPlacement="floating" placeholder="juan123" formControlName="username"></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" type="submit" [disabled]="!editForm.valid">
+      Guardar Cambios
+    </ion-button>
+  </form>
 </ion-content>

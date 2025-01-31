@@ -15,7 +15,7 @@ export class RegisterPage implements OnInit {
 
   formErrors = {
     name: [{ type: 'required', message: 'El nombre es obligatorio' }],
-    lastname: [{ type: 'required', message: 'El apellido es obligatorio' }],
+    last_name: [{ type: 'required', message: 'El apellido es obligatorio' }],
     username: [{ type: 'required', message: 'El nombre de usuario es obligatorio' }],
     email: [
       { type: 'required', message: 'El correo es obligatorio' },
@@ -35,7 +35,7 @@ export class RegisterPage implements OnInit {
   ) {
     this.registerForm = this.formBuilder.group({
       name: new FormControl('', Validators.required),
-      lastname: new FormControl('', Validators.required),
+      last_name: new FormControl('', Validators.required),
       username: new FormControl('', Validators.required),
       email: new FormControl('', Validators.compose([Validators.required, Validators.email])),
       password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),

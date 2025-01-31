@@ -17,10 +17,10 @@
 
     
     <ion-item>
-      <ion-input label="Apellido" labelPlacement="floating" placeholder="Pérez" formControlName="lastname"></ion-input>
+      <ion-input label="Apellido" labelPlacement="floating" placeholder="Pérez" formControlName="last_name"></ion-input>
     </ion-item>
-    <ion-label color="danger" *ngIf="registerForm.get('lastname')?.hasError('required') && registerForm.get('lastname')?.dirty">
-      {{ formErrors.lastname[0].message }}
+    <ion-label color="danger" *ngIf="registerForm.get('last_name')?.hasError('required') && registerForm.get('last_name')?.dirty">
+      {{ formErrors.last_name[0].message }}
     </ion-label>
 
    

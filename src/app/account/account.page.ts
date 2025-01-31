@@ -4,6 +4,8 @@ import { Storage } from '@ionic/storage-angular';
 import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { AlertController } from '@ionic/angular';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+
 defineCustomElements(window);
 @Component({
   selector: 'app-account',
@@ -16,14 +18,22 @@ export class AccountPage implements OnInit {
     name: '',
     email: '',
     image: '',
+    username: '',
     followees: [],
     followers: []
   };
+  isEditing: boolean = false;
+  editForm: FormGroup;
   constructor(
     private userService: UserService,
     private storage: Storage,
-    public alertController: AlertController
-  ) { }
+    public alertController: AlertController,
+    private formBuilder: FormBuilder
+  ) {
+    this.editForm = this.formBuilder.group({
+      username: new FormControl('', Validators.required)
+    });
+   }
 
   async ngOnInit() {
     let user: any = await this.storage.get('user');
@@ -50,6 +60,18 @@ export class AccountPage implements OnInit {
     console.log(capturedPhoto.dataUrl);
     this.user_data.image = capturedPhoto.dataUrl;
     this.update();
+  }
+  async updateUsername(username:any){
+     console.log('update username');
+  this.user_data.username = this.editForm.value.username;
+  this.update();
+  this.isEditing = false;
+  }
+  toggleEditForm() {
+    this.isEditing = !this.isEditing;
+    if (this.isEditing) {
+      this.editForm.patchValue({ username: this.user_data.username });
+    }
   }
 
   async update() {
